@@ -1,4 +1,4 @@
-package march;
+package test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,19 +9,21 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-class MinionChef {
+class MinionChef2 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		InputStream input=System.in;
-		MinionChefInputReader in=new MinionChefInputReader(input);
+		MinionChef2InputReader in=new MinionChef2InputReader(input);
 		OutputStream output=System.out;
 		PrintWriter out=new PrintWriter(output);
+		
+		MinionChef2MergeSort obj=new MinionChef2MergeSort();
+		
 		int nCases=in.nextInt();
 		long[] result=new long[nCases];
 		int z=0;
 		for(int i=0;i<nCases;i++) {
-			MinionChefMergeSort sort=new MinionChefMergeSort();
 			String line1=in.nextLine();
 			int N=Integer.parseInt(line1.split(" ")[0]);
 			long H=Long.parseLong(line1.split(" ")[1]);
@@ -34,89 +36,41 @@ class MinionChef {
 			
 			}
 
-			for(int j=0;j<N;j++) {
-				A[j]=Long.parseLong(line2[j]);
-				sum=sum+A[j];
-			}
+			A=obj.sort(A, N);
 
-//			out.println("sum:"+sum);
-/*			long sum=0;
 
-			for(int j=0;j<N;j++) {
-				A[j]=Long.parseLong(line2[j]);
-				sum=sum+A[j];
-			}
-			
-			for(int j=0;j<N;j++) {
-				if(A[j]>max) {
-					max=A[j];
-				}				
-			}
-						
-			if(N==H)
-				out.println(max);
-			else {
-				if(sum%H==0)
-					out.println((long)(Math.ceil((double)sum/(double)H+1)));
-				else
-					out.println((long)(Math.ceil((double)sum/(double)H)));
-				
-			}*/
-			
-			A=sort.sort(A, N);
-/*			for(int j=0;j<N;j++) {
-				if(A[j]>max) {
-
-					max=A[j];
-
-				}				
-			}
-*/			
-			
-			max=A[N-1];
 			long min=-1;
-			long cnt=Long.MAX_VALUE;
+			long cnt=0;
 			if(N==H) {
-				out.println(max);
+				out.println(A[N-1]);
 //				result[z++]=max;
 
-			}			
+			}							
 			else {
-				long kMin=(long)Math.ceil((sum)/(H+0.0));
-
 				int kindex=0;
-				for(int j=0;j<N;j++) {
-					if(A[j]>kMin) {
-						kindex=j;
-						break;
-					}					
-				}
-
-//			out.println("kmin:"+kMin);
-				while(cnt>H) {					
+				max=A[N-1];
+				while(cnt<=H) {									
 					
-					cnt=kindex;
-					for(int j=kindex;j<N;j++) {
-//						cnt=cnt+Math.ceil(A[j]/kMin);
-						if(A[j]%kMin==0) {
-							cnt=cnt+A[j]/kMin;
-						}
-						else
-							cnt=cnt+A[j]/kMin+1;
-						
-					}
-					kMin=kMin+1;
-					
-					for(int j=kindex;j<N;j++) {
-						if(A[j]>kMin) {
+					max=max-1;
+					kindex=0;
+					for(int j=N-1;j>=0;j--) {
+						if(A[j]<=max) {
 							kindex=j;
 							break;
 						}					
+					}				
+					cnt=kindex+1;
+					for(int j=kindex+1;j<N;j++) {
+						if(A[j]%max==0) 
+							cnt=cnt+A[j]/max;
+						else
+							cnt=cnt+A[j]/max+1;
 					}
 					
+					
 				}
-				
-				out.println(kMin-1);
+				max=max+1;
+				out.println(max);
 //				result[z++]=max;
 				
 			}
@@ -128,11 +82,11 @@ class MinionChef {
 	}
 
 }
-class MinionChefInputReader {
+class MinionChef2InputReader {
     public BufferedReader reader;
     public StringTokenizer tokenizer;
 
-    public MinionChefInputReader(InputStream stream) {
+    public MinionChef2InputReader(InputStream stream) {
         reader = new BufferedReader(new InputStreamReader(stream), 32768);
         tokenizer = null;
     }
@@ -163,7 +117,9 @@ class MinionChefInputReader {
     }
 
 }
-class MinionChefMergeSort {
+
+
+class MinionChef2MergeSort {
 /*		public static void main(String args[]) {
 			MergeSort obj=new MergeSort();
 			long arr[]= {10,12,1,5,8};
